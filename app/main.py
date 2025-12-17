@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from .utils import json_to_dict_list
 import os
 from typing import Optional
+from app.students.models import SStudent
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(script_dir)
@@ -53,3 +54,10 @@ def get_all_student_course(course: int, major: Optional[str]=None, enrollment_ye
         filtered_students = [student for student in filtered_students if student['enrollments_year']==enrollment_year]
 
     return filtered_students
+
+@app.get("/student")
+def get_student_from_param_id(student_id: int) -> SStudent:
+    students = json_to_dict_list(path_to_json)
+    for student in students:
+        if student["student_id"] == student_id:
+            return student
